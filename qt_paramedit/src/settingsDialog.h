@@ -35,7 +35,7 @@ class SettingsDialog : public QDialog, protected Ui::SettingsDialog
 {
    public:
       SettingsDialog(QWidget* parent = NULL);
-      ~SettingsDialog();
+      ~SettingsDialog()=default;
 
       void setDoubleDecimals(unsigned int decs)
       {

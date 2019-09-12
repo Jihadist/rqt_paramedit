@@ -30,6 +30,7 @@
 #define XML_RPC_TREE_ITEM_H
 
 #include <ros/ros.h>
+
 #include <QVariant>
 #include <deque>
 using std::deque;

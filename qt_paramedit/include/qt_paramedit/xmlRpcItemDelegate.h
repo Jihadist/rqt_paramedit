@@ -29,6 +29,7 @@
 #ifndef XML_RPC_ITEM_DELEGATE_H
 #define XML_RPC_ITEM_DELEGATE_H
 
+
 #include <QStyledItemDelegate>
 
 class XmlRpcItemDelegate : public QStyledItemDelegate
@@ -37,7 +38,7 @@ class XmlRpcItemDelegate : public QStyledItemDelegate
 
    public:
       XmlRpcItemDelegate(QObject* parent = NULL);
-      ~XmlRpcItemDelegate();
+      ~XmlRpcItemDelegate()=default;
 
       QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem & option, const QModelIndex & index) const;
 

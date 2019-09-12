@@ -1,7 +1,7 @@
 #ifndef PARAM_ROOT_CHOOSER_h
 #define PARAM_ROOT_CHOOSER_h
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <string>
 #include <vector>
 #include "ui_param_root_chooser.h"
@@ -29,7 +29,7 @@ class ParamRootChooser : public QDialog
          *
          * E.g.: /test/param/a -> [/test, /test/param]
          */
-        std::vector<std::string> getParameterRoots(const std::vector<std::string> paramNames) const;
+        std::vector<std::string> getParameterRoots(const std::vector<std::string>& paramNames) const;
 
     private:
         Ui::ParamRootChooserDialog ui;

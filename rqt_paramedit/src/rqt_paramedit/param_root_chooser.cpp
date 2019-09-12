@@ -34,7 +34,8 @@ std::vector<std::string> ParamRootChooser::getParamNamesFromMaster() const
     params[0] = ros::this_node::getName();
     if(ros::master::execute("getParamNames", params, response, payload, true)) {
         std::vector<std::string> ret;
-        for(int i = 0; i < response[2].size(); i++) {
+        ret.reserve(response[2].size());
+for(int i = 0; i < response[2].size(); i++) {
             ret.push_back(response[2][i]);
         }
 
@@ -45,7 +46,7 @@ std::vector<std::string> ParamRootChooser::getParamNamesFromMaster() const
     return std::vector<std::string>();
 }
 
-std::vector<std::string> ParamRootChooser::getParameterRoots(const std::vector<std::string> paramNames) const
+std::vector<std::string> ParamRootChooser::getParameterRoots(const std::vector<std::string>& paramNames) const
 {
     std::set<std::string> roots;
     roots.insert("/");
@@ -53,7 +54,7 @@ std::vector<std::string> ParamRootChooser::getParameterRoots(const std::vector<s
     // split each param like: /test/param/a into single parts
     // and add each prefix to the param list
     // -> /test, /test/param
-    for(std::vector<std::string>::const_iterator it = paramNames.begin(); it != paramNames.end(); it++) {
+    for(auto it = paramNames.begin(); it != paramNames.end(); it++) {
         QString param = it->c_str();
         QStringList parts = param.split("/", QString::SkipEmptyParts);
         if(parts.size() < 2)

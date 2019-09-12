@@ -30,6 +30,7 @@
 #define XML_RPC_MODEL_H
 
 #include <QAbstractItemModel>
+
 #include "xmlRpcTreeItem.h"
 
 /// QAbstractItemModel for XmlRpcValues.

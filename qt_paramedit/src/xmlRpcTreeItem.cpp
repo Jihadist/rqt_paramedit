@@ -87,16 +87,12 @@ QVariant XmlRpcTreeItem::xmlToVariant(XmlRpc::XmlRpcValue & val) const
    switch(val.getType()) {
       case XmlRpc::XmlRpcValue::TypeBoolean:
          return QVariant( (bool)val );
-         break;
       case XmlRpc::XmlRpcValue::TypeInt:
          return QVariant( (int)val );
-         break;
       case XmlRpc::XmlRpcValue::TypeDouble:
          return QVariant( (double)val );
-         break;
       case XmlRpc::XmlRpcValue::TypeString:
          return QVariant( ((std::string)val).c_str() );
-         break;
       case XmlRpc::XmlRpcValue::TypeDateTime:
          {
             ROS_WARN_THROTTLE(1.0, "Accessing TypeDateTime is untested.");
@@ -118,7 +114,6 @@ QVariant XmlRpcTreeItem::xmlToVariant(XmlRpc::XmlRpcValue & val) const
                       *       tm_hour	hours since midnight	0-23
                       */
                      QTime(time.tm_hour, time.tm_min, time.tm_sec, ms)));
-            break;
          }
       case XmlRpc::XmlRpcValue::TypeBase64:
          {
@@ -128,13 +123,10 @@ QVariant XmlRpcTreeItem::xmlToVariant(XmlRpc::XmlRpcValue & val) const
             for(std::vector<char>::iterator it = bd.begin(); it != bd.end(); it++)
                ba.append(*it);
             return QVariant(ba);
-            break;
-         }
+        }
       default:
          return QVariant();
    }
-
-   return QVariant();
 }
 
 QVariant XmlRpcTreeItem::data(int row, int column) const
@@ -147,7 +139,7 @@ QVariant XmlRpcTreeItem::data(int row, int column) const
    // get the row'th entry
    if(_data->getType() == XmlRpc::XmlRpcValue::TypeStruct) {
       int count = 0;
-      for(XmlRpc::XmlRpcValue::iterator it = _data->begin(); it != _data->end(); it++) {
+      for(auto it = _data->begin(); it != _data->end(); it++) {
          if(count == row) {   // at row'th entry
             if(column == 0) { // get the rows'th key
                return it->first.c_str();
@@ -182,7 +174,7 @@ bool XmlRpcTreeItem::isBool(int row, int column) const
    // get the row'th entry
    if(_data->getType() == XmlRpc::XmlRpcValue::TypeStruct) {
       int count = 0;
-      for(XmlRpc::XmlRpcValue::iterator it = _data->begin(); it != _data->end(); it++) {
+      for(auto it = _data->begin(); it != _data->end(); it++) {
          if(count == row) {   // at row'th entry
             XmlRpc::XmlRpcValue & val = it->second;
             if(val.getType() == XmlRpc::XmlRpcValue::TypeBoolean)
@@ -274,7 +266,7 @@ bool XmlRpcTreeItem::setData(QVariant val)
             QDateTime dt = val.toDateTime();
             if(dt.isValid()) {
                ROS_DEBUG("Setting datetime param.");
-               struct tm time;
+               struct tm time{};
                time.tm_year = dt.date().year() - 1900;
                time.tm_mon = dt.date().month() - 1;
                time.tm_mday = dt.date().day();
@@ -352,7 +344,7 @@ void XmlRpcTreeItem::addChild(const std::string & name, XmlRpc::XmlRpcValue* chi
    std::string path = ros::names::append(this->_path, name);
    if(name.empty())
       path = name;   // no path
-   XmlRpcTreeItem* child = new XmlRpcTreeItem(childData, this, path, _nh);
+   auto* child = new XmlRpcTreeItem(childData, this, path, _nh);
    _children.push_back(child);
 }
 

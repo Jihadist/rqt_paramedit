@@ -29,8 +29,8 @@
 #include <ros/ros.h>
 #include <QApplication>
 #include <string>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "MainWindow.h"
 #include "qt_paramedit/xmlRpcModel.h"
 

@@ -45,7 +45,7 @@ QModelIndex XmlRpcModel::index(int row, int column, const QModelIndex & parent) 
       return createIndex(row, column, _root);
    }
 
-   XmlRpcTreeItem* parentItem = static_cast<XmlRpcTreeItem*>(parent.internalPointer());
+   auto* parentItem = static_cast<XmlRpcTreeItem*>(parent.internalPointer());
    // parent points to the (parent.row, parent.column) child of parentItem and its corresponding tree node
    // We want to create a child of that.
    // First check if that (parent.row, parent.column) child of parentItem can be a parent for an index again
@@ -53,7 +53,7 @@ QModelIndex XmlRpcModel::index(int row, int column, const QModelIndex & parent) 
    if(parent.column() > 0)
       return QModelIndex();
    // Lookup that child item and use it as parent for the new index
-   XmlRpcTreeItem* childItem = parentItem->child(parent.row());
+   auto* childItem = parentItem->child(parent.row());
    if(childItem) {
       // only items with children can be parents
       if(childItem->childCount() == 0)
@@ -70,8 +70,8 @@ QModelIndex XmlRpcModel::parent(const QModelIndex & index) const
    if(!index.isValid())
       return QModelIndex();
 
-   XmlRpcTreeItem* childItem = static_cast<XmlRpcTreeItem*>(index.internalPointer());
-   XmlRpcTreeItem* parentItem = childItem->parent();
+   auto* childItem = static_cast<XmlRpcTreeItem*>(index.internalPointer());
+   auto* parentItem = childItem->parent();
 
    // top level
    if(parentItem == NULL)
@@ -86,8 +86,8 @@ Qt::ItemFlags XmlRpcModel::flags(const QModelIndex & index) const
       return 0;
 
    if(index.column() == 1) {     // right sides of inner nodes have no flags
-      XmlRpcTreeItem *parentItem = static_cast<XmlRpcTreeItem*>(index.internalPointer());
-      XmlRpcTreeItem *item = parentItem->child(index.row());
+      auto *parentItem = static_cast<XmlRpcTreeItem*>(index.internalPointer());
+      auto *item = parentItem->child(index.row());
       // index points to index.rows child of parentItem
       if(item && item->childCount() > 0) {
          return 0;
@@ -167,7 +167,7 @@ bool XmlRpcModel::setData(const QModelIndex & index, const QVariant & value, int
    if(index.column() != 1)
       return false;
 
-   XmlRpcTreeItem* parentItem = static_cast<XmlRpcTreeItem*>(index.internalPointer());
+   auto* parentItem = static_cast<XmlRpcTreeItem*>(index.internalPointer());
    if(parentItem->isBool(index.row(), index.column())) {
       if(role == Qt::EditRole)
          return false;
@@ -177,7 +177,7 @@ bool XmlRpcModel::setData(const QModelIndex & index, const QVariant & value, int
          return false;
    }
 
-   XmlRpcTreeItem* item = parentItem->child(index.row());
+   auto* item = parentItem->child(index.row());
 
    // this should always be a leaf, never a struct!
    if(item->setData(value)) {
@@ -212,8 +212,8 @@ int XmlRpcModel::rowCount(const QModelIndex & parent) const
 
    // parent refers to the parent.row'th child of parentItem
    // get that item
-   XmlRpcTreeItem* parentItem = static_cast<XmlRpcTreeItem*>(parent.internalPointer());
-   XmlRpcTreeItem* item = parentItem->child(parent.row());
+   auto* parentItem = static_cast<XmlRpcTreeItem*>(parent.internalPointer());
+   auto* item = parentItem->child(parent.row());
 
    if(item == NULL)
       return 0;
@@ -233,8 +233,8 @@ int XmlRpcModel::columnCount(const QModelIndex & parent) const
 
    // parent is the parent.row'th child of parentItem
    // get that item
-   XmlRpcTreeItem* parentItem = static_cast<XmlRpcTreeItem*>(parent.internalPointer());
-   XmlRpcTreeItem* item = parentItem->child(parent.row());
+   auto* parentItem = static_cast<XmlRpcTreeItem*>(parent.internalPointer());
+   auto* item = parentItem->child(parent.row());
 
    if(item == NULL)
       return 0;

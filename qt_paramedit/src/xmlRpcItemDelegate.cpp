@@ -39,10 +39,6 @@ XmlRpcItemDelegate::XmlRpcItemDelegate(QObject* parent) : QStyledItemDelegate(pa
    doubleDecimals = 10;
 }
 
-XmlRpcItemDelegate::~XmlRpcItemDelegate()
-{
-}
-
 QWidget* XmlRpcItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem & option, 
       const QModelIndex & index) const
 {
@@ -51,20 +47,17 @@ QWidget* XmlRpcItemDelegate::createEditor(QWidget* parent, const QStyleOptionVie
    switch(data.type()) {
       case QVariant::Double:  // bring up double spinbox with higher decimals
          {
-            QDoubleSpinBox* editor = new QDoubleSpinBox(parent);
+            auto* editor = new QDoubleSpinBox(parent);
             editor->setDecimals(doubleDecimals);
             editor->setMinimum(-INFINITY);
             editor->setMaximum(INFINITY);
             return editor;
-            break;
          }
       case QVariant::Int:     // bring up spinbox (done by default)
       case QVariant::String:  // use std line edit, but fill it (done by default)
       default:
          return QStyledItemDelegate::createEditor(parent, option, index);
    }
-
-   return QStyledItemDelegate::createEditor(parent, option, index);
 }
 
 void XmlRpcItemDelegate::setEditorData(QWidget* editor, const QModelIndex & index) const

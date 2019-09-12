@@ -27,7 +27,7 @@
  */
 
 #include "MainWindow.h"
-#include <stdio.h>
+#include <cstdio>
 #include "settingsDialog.h"
 
 MainWindow::MainWindow(XmlRpc::XmlRpcValue & initParams, const std::string & paramRoot, ros::NodeHandle* nh)

@@ -54,12 +54,12 @@ void ParamEdit::shutdownPlugin()
 {
 }
 
-void ParamEdit::saveSettings(qt_gui_cpp::Settings& global_settings, qt_gui_cpp::Settings& perspective_settings) const
+void ParamEdit::saveSettings(qt_gui_cpp::Settings&  /*global_settings*/, qt_gui_cpp::Settings& perspective_settings) const
 {
     perspective_settings.setValue("param_root", _paramRoot.c_str());
 }
 
-void ParamEdit::restoreSettings(const qt_gui_cpp::Settings& global_settings, const qt_gui_cpp::Settings& perspective_settings)
+void ParamEdit::restoreSettings(const qt_gui_cpp::Settings&  /*global_settings*/, const qt_gui_cpp::Settings& perspective_settings)
 {
     _paramRoot = qPrintable(perspective_settings.value("param_root", "/").toString());
     reload();
