@@ -19,8 +19,14 @@ Create your own catkin workspace(1) or git clone into existing(2)
   ```bash
   cd <your_workspace>/src
   ```
+  
 3.  Clone and build
   ```bash
   git clone https://github.com/Jihadist/rqt_paramedit && cd ..
   catkin_make
+  ```
+  
+4. Run
+  ```bash
+  rosron rqt_paramedit rqt_paramedit
   ```
