@@ -7,8 +7,12 @@
 
 #include <QWidget>
 #include <QTreeView>
+#include <QPushButton>
+#include <QFormLayout>
+#include <QVBoxLayout>
 #include <vector>
 #include <string>
+
 
 namespace rqt_paramedit
 {
@@ -39,10 +43,20 @@ class ParamEdit : public rqt_gui_cpp::Plugin
 
     protected:
         void reload();
+        bool set_new_param();
+        bool set_new_param(const std::string &s);
 
 
     protected:
         QTreeView* _treeView;
+        QWidget* _widget;
+
+        QPushButton* _updateButton;
+        QPushButton* _refButton;
+
+        QVBoxLayout *_mainLayout;
+        QHBoxLayout *_horLayout;
+
 
         ros::NodeHandle _nh;
         std::string _paramRoot;
@@ -51,6 +65,10 @@ class ParamEdit : public rqt_gui_cpp::Plugin
         XmlRpcModel* _model;
         XmlRpcItemDelegate* _delegate;
 
+
+    private slots:
+      void handleRefButton();
+      void handUpdButton();
 };
 
 }

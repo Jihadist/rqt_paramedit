@@ -1,16 +1,17 @@
 <package>
   <name>rqt_paramedit</name>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <description>
      rqt_paramedit - a rqt plugin for editing parameters using qt_paramedit.
   </description>
   <author email="c.dornhege@gmail.com">Christian Dornhege</author>
   <maintainer email="c.dornhege@gmail.com">Christian Dornhege</maintainer>
+  <maintainer email="tomasiche@gmail.com">Anton</maintainer>
   <license>BSD</license>
 
   <url type="website">http://ros.org/wiki/rqt_paramedit</url>
-  <url type="repository">https://github.com/dornhege/rqt_paramedit</url>
-  <url type="bugtracker">https://github.com/dornhege/rqt_paramedit/issues</url>
+  <url type="repository">hhttps://github.com/Jihadist/rqt_paramedit</url>
+  <url type="bugtracker">https://github.com/Jihadist/rqt_paramedit/issues</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>

@@ -92,7 +92,14 @@ QVariant XmlRpcTreeItem::xmlToVariant(XmlRpc::XmlRpcValue & val) const
       case XmlRpc::XmlRpcValue::TypeDouble:
          return QVariant( (double)val );
       case XmlRpc::XmlRpcValue::TypeString:
-         return QVariant( ((std::string)val).c_str() );
+   {
+        // val.size()>50 ? return QVariant(std::string(val)).substr(0,50) : QVariant(std::string(val));
+      if (val.size()>50)
+        return QVariant(std::string(val).substr(0,50).append("...").c_str());
+      else
+        return QVariant(std::string(val).c_str());
+   }
+
       case XmlRpc::XmlRpcValue::TypeDateTime:
          {
             ROS_WARN_THROTTLE(1.0, "Accessing TypeDateTime is untested.");

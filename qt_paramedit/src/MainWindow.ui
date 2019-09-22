@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -58,6 +58,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionReload"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionExit">
    <property name="text">

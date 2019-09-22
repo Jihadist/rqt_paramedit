@@ -40,7 +40,7 @@ for(int i = 0; i < response[2].size(); i++) {
         }
 
         return ret;
-    } 
+    }
 
     ROS_ERROR("Failed to getParamNames from master.");
     return std::vector<std::string>();
