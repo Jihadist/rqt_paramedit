@@ -1,9 +1,12 @@
 #ifndef RQT_PARAMEDIT_H
 #define RQT_PARAMEDIT_H
 
+#define _DEBUG
+
 #include <rqt_gui_cpp/plugin.h>
 #include <qt_paramedit/xmlRpcModel.h>
 #include <qt_paramedit/xmlRpcItemDelegate.h>
+#include <rqt_paramedit/services.h>
 
 #include <QWidget>
 #include <QTreeView>
@@ -43,12 +46,11 @@ class ParamEdit : public rqt_gui_cpp::Plugin
 
     protected:
         void reload();
-        bool set_new_param();
-        bool set_new_param(const std::string &s);
 
 
     protected:
         QTreeView* _treeView;
+
         QWidget* _widget;
 
         QPushButton* _updateButton;
@@ -64,6 +66,8 @@ class ParamEdit : public rqt_gui_cpp::Plugin
 
         XmlRpcModel* _model;
         XmlRpcItemDelegate* _delegate;
+
+        Services _services;
 
 
     private slots:

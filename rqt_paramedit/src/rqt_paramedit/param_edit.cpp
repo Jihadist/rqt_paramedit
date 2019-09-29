@@ -9,6 +9,7 @@
 
 PLUGINLIB_EXPORT_CLASS(rqt_paramedit::ParamEdit, rqt_gui_cpp::Plugin)
 
+
 namespace rqt_paramedit
 {
 
@@ -16,7 +17,6 @@ ParamEdit::ParamEdit() : _treeView(NULL), _model(NULL), _delegate(NULL), _widget
 {
     setObjectName("ParamEdit");
     _treeView = new QTreeView();
-
     _widget=new QWidget();
 
     _updateButton=new QPushButton();
@@ -41,8 +41,9 @@ ParamEdit::ParamEdit() : _treeView(NULL), _model(NULL), _delegate(NULL), _widget
 
 void ParamEdit::initPlugin(qt_gui_cpp::PluginContext& context)
 {
-
-
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::initPlugin()");
+    #endif
     context.addWidget(_widget);
 
     _paramRoot = "/";
@@ -55,6 +56,9 @@ void ParamEdit::initPlugin(qt_gui_cpp::PluginContext& context)
 
 void ParamEdit::reload()
 {
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::reload()");
+    #endif
     if(!_nh.getParam(_paramRoot, _xmlrpc)) {
         ROS_ERROR("Could not get parameters at: \"%s\"", _paramRoot.c_str());
         QMessageBox::critical(_treeView, "Error loading parameters",
@@ -75,86 +79,57 @@ void ParamEdit::reload()
     delete _model;
     _model = new XmlRpcModel(&_xmlrpc, _paramRoot, &_nh);
     _treeView->setModel(_model);
+    _services.loadData();
+    //std::string s;
+    _services.findServices();
 }
 
-bool ParamEdit::set_new_param()
-{
-  XmlRpc::XmlRpcValue request = "/node";
-  XmlRpc::XmlRpcValue response;
-  XmlRpc::XmlRpcValue payload;
-
-  // Get services names
-  if (ros::ok() == true)
-    ros::master::execute("getSystemState",request,response,payload,true);
-
-  std::vector<std::string> update_list;
-  XmlRpc::XmlRpcValue& sub_info = payload[2];
-  for (size_t i = 0; i < sub_info.size(); ++i)
-  {
-    std::string topic_name = sub_info[i][0];
-    std::string search_topic="update_parameters";
-    auto searched_pos=topic_name.rfind(search_topic);
-
-    if ((searched_pos!=std::string::npos) && topic_name.at(topic_name.size()-search_topic.size()-1)=='/')
-      update_list.push_back(topic_name);
-  }
-      for (const auto &i : update_list)
-        std::cout<<i<<std::endl;
-
-  ROS_INFO("Hello world!");
-
-
-  // Call services
-  //ros::NodeHandle nh;
-  ros::ServiceClient client;
-  //std_msgs::Empty update_msg;
-  std_srvs::Empty server;
-  for (auto s:update_list)
-  {
-    client = _nh.serviceClient<std_srvs::Empty>(s);
-
-    if( client.call(server))
-    {
-        ROS_INFO("%s", s.append(" is called").c_str());
-    }
-    else
-    {
-        std::string error_msg="Failed to call service: ";
-        ROS_ERROR("%s", error_msg.append(s).c_str());
-        return 1;
-    }
-
-  }
-}
 
 void ParamEdit::handleRefButton()
 {
-  ROS_INFO("Refresh values initialized");
-  reload();
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::handleRefButton()");
+    #endif
+    reload();
 }
 
 void ParamEdit::handUpdButton()
 {
-  set_new_param();
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::handUpdButton()");
+    #endif
+    _services.callServices();
 }
 
 void ParamEdit::shutdownPlugin()
 {
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::shutdownPlugin()");
+    #endif
 }
 
 void ParamEdit::saveSettings(qt_gui_cpp::Settings&  /*global_settings*/, qt_gui_cpp::Settings& perspective_settings) const
 {
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::saveSettings()");
+    #endif
     perspective_settings.setValue("param_root", _paramRoot.c_str());
 }
 
 void ParamEdit::restoreSettings(const qt_gui_cpp::Settings&  /*global_settings*/, const qt_gui_cpp::Settings& perspective_settings)
 {
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::restoreSettings()");
+    #endif
     _paramRoot = qPrintable(perspective_settings.value("param_root", "/").toString());
     reload();
 }
 
 void ParamEdit::triggerConfiguration()
 {
+    #ifdef _DEBUG
+    ROS_INFO("ParamEdit::triggerConfiguration()");
+    #endif
     ParamRootChooser dialog;
     if(dialog.exec() == QDialog::Accepted) {
         if(dialog.selectedParamRoot().empty()) {

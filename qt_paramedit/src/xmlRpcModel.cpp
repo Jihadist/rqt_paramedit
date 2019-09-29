@@ -27,6 +27,7 @@
  */
 
 #include "qt_paramedit/xmlRpcModel.h"
+#include <QDebug>
 
 XmlRpcModel::XmlRpcModel(XmlRpc::XmlRpcValue* rootData, const std::string & rootPath, ros::NodeHandle* nh)
 {
@@ -181,6 +182,9 @@ bool XmlRpcModel::setData(const QModelIndex & index, const QVariant & value, int
 
    // this should always be a leaf, never a struct!
    if(item->setData(value)) {
+    //connect(index.model(),QAbstractItemModel::dataChanged(index,index),)
+    // index.model()
+     qDebug()<<index.data();
       Q_EMIT dataChanged(index, index);
       return true;
    }

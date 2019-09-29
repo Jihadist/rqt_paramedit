@@ -93,10 +93,7 @@ QVariant XmlRpcTreeItem::xmlToVariant(XmlRpc::XmlRpcValue & val) const
          return QVariant( (double)val );
       case XmlRpc::XmlRpcValue::TypeString:
    {
-        // val.size()>50 ? return QVariant(std::string(val)).substr(0,50) : QVariant(std::string(val));
-      if (val.size()>50)
-        return QVariant(std::string(val).substr(0,50).append("...").c_str());
-      else
+
         return QVariant(std::string(val).c_str());
    }
 

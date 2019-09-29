@@ -45,6 +45,9 @@ class XmlRpcItemDelegate : public QStyledItemDelegate
       void setEditorData(QWidget* editor, const QModelIndex & index) const;
       void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex & index) const;
 
+      // Usable only for update_params services
+      void addUpdateButton(const QModelIndex & index);
+
       void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem & option, 
             const QModelIndex & index) const;
 

@@ -101,6 +101,10 @@ class XmlRpcTreeItem
       ros::NodeHandle* _nh;
 
       deque<XmlRpcTreeItem*> _children;
+
+private:
+      void test(){
+      }
 };
 
 #endif

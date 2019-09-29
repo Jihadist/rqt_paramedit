@@ -16,11 +16,13 @@ set(CMAKE_AUTOUIC ON)
 set(rqt_paramedit_SRCS
     src/rqt_paramedit/param_edit.cpp
     src/rqt_paramedit/param_root_chooser.cpp
+    src/rqt_paramedit/services.cpp
     )
 
 set(rqt_paramedit_HDRS
     include/rqt_paramedit/param_edit.h
     src/rqt_paramedit/param_root_chooser.h
+    include/rqt_paramedit/services.h
     )
 
 set(rqt_paramedit_INCLUDE_DIRECTORIES
