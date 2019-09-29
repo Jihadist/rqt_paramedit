@@ -1,7 +1,6 @@
 #ifndef SERVICES_H
 #define SERVICES_H
 
-
 #define _DEBUG
 
 #include <std_srvs/Empty.h>
@@ -16,19 +15,20 @@
 class Services
 {
   typedef std::set<std::string> setOfServices;
-public:
-  Services()=default;
 
-  Services *loadData();
-  setOfServices *getNames() const;
-  setOfServices *findServices();
-  setOfServices *findServices(std::string &);
+public:
+  Services() = default;
+
+  Services* loadData();
+  setOfServices* getNames() const;
+  setOfServices* findServices();
+  setOfServices* findServices(std::string&);
 
   bool callServices();
   bool callService(std::string service);
 
   setOfServices getServicesList() const;
-  void setServicesList(const setOfServices &value);
+  void setServicesList(const setOfServices& value);
 
 private:
   ros::NodeHandle _nh;
@@ -44,4 +44,4 @@ private:
   void printServices();
 };
 
-#endif // SERVICES_H
+#endif  // SERVICES_H
