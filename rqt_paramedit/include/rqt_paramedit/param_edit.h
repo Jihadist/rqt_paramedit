@@ -7,6 +7,7 @@
 #include <qt_paramedit/xmlRpcModel.h>
 #include <qt_paramedit/xmlRpcItemDelegate.h>
 #include <rqt_paramedit/services.h>
+#include <rqt_paramedit/xmlRpcModelWalk.h>
 
 #include <QWidget>
 #include <QTreeView>
@@ -23,6 +24,7 @@ class ParamEdit : public rqt_gui_cpp::Plugin
   Q_OBJECT
 
 public:
+  friend XmlRpcModel;
   ParamEdit();
 
   virtual void initPlugin(qt_gui_cpp::PluginContext& context);
@@ -59,7 +61,8 @@ protected:
   std::string _paramRoot;
   XmlRpc::XmlRpcValue _xmlrpc;
 
-  XmlRpcModel* _model;
+  xmlRpcModelWalk* _model;
+  // XmlRpcModel* _model;
   XmlRpcItemDelegate* _delegate;
 
   Services _services;

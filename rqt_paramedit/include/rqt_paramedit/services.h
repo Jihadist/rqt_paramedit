@@ -1,8 +1,6 @@
 #ifndef SERVICES_H
 #define SERVICES_H
 
-#define _DEBUG
-
 #include <std_srvs/Empty.h>
 #include <rqt_gui_cpp/plugin.h>
 #include <ros/ros.h>
@@ -11,24 +9,36 @@
 #include <set>
 #include <string>
 #include <algorithm>
+#include <map>
+#include <utility>
 
-class Services
+#include <QModelIndex>
+#include <QString>
+
+class Services : public QObject
 {
-  typedef std::set<std::string> setOfServices;
-
+  typedef std::map<std::string, QModelIndex> mapOfservices;
+  Q_OBJECT
 public:
+  friend std::string ServiceToXml(const std::vector<std::string>& vec);
+
+  friend std::vector<std::string> split(const std::string& s, char seperator);
   Services() = default;
 
   Services* loadData();
-  setOfServices* getNames() const;
-  setOfServices* findServices();
-  setOfServices* findServices(std::string&);
+  mapOfservices* getNames() const;
+  mapOfservices* findServices();
+  mapOfservices* findServices(std::string&);
 
   bool callServices();
   bool callService(std::string service);
 
-  setOfServices getServicesList() const;
-  void setServicesList(const setOfServices& value);
+  mapOfservices getServicesMap() const;
+  void setServicesMap(const mapOfservices& servicesMap);
+  mapOfservices* raw()
+  {
+    return &_servicesMap;
+  }
 
 private:
   ros::NodeHandle _nh;
@@ -38,10 +48,12 @@ private:
   ros::ServiceClient _client;
   std_srvs::Empty _srvMsg;
 
-  setOfServices _servicesList;
+  mapOfservices _servicesMap;
 
   // Dev funcs
   void printServices();
+public slots:
+  void call();
 };
 
 #endif  // SERVICES_H

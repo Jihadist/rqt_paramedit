@@ -17,12 +17,14 @@ set(rqt_paramedit_SRCS
     src/rqt_paramedit/param_edit.cpp
     src/rqt_paramedit/param_root_chooser.cpp
     src/rqt_paramedit/services.cpp
+    src/rqt_paramedit/xmlRpcModelWalk.cpp
     )
 
 set(rqt_paramedit_HDRS
     include/rqt_paramedit/param_edit.h
     src/rqt_paramedit/param_root_chooser.h
     include/rqt_paramedit/services.h
+    include/rqt_paramedit/xmlRpcModelWalk.h
     )
 
 set(rqt_paramedit_INCLUDE_DIRECTORIES
@@ -66,4 +68,3 @@ install(PROGRAMS scripts/rqt_paramedit
 install(DIRECTORY include/${PROJECT_NAME}
     DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
-

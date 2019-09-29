@@ -7,6 +7,9 @@
 #include <QFormLayout>
 #include <QVBoxLayout>
 
+#include <QVariant>
+#include <QList>
+
 PLUGINLIB_EXPORT_CLASS(rqt_paramedit::ParamEdit, rqt_gui_cpp::Plugin)
 
 namespace rqt_paramedit
@@ -49,9 +52,8 @@ ParamEdit::ParamEdit()
 
 void ParamEdit::initPlugin(qt_gui_cpp::PluginContext& context)
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::initPlugin()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
   context.addWidget(_widget);
 
   _paramRoot = "/";
@@ -64,9 +66,8 @@ void ParamEdit::initPlugin(qt_gui_cpp::PluginContext& context)
 
 void ParamEdit::reload()
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::reload()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
   if (!_nh.getParam(_paramRoot, _xmlrpc))
   {
     ROS_ERROR("Could not get parameters at: \"%s\"", _paramRoot.c_str());
@@ -92,60 +93,118 @@ void ParamEdit::reload()
   }
 
   delete _model;
-  _model = new XmlRpcModel(&_xmlrpc, _paramRoot, &_nh);
-  _treeView->setModel(_model);
+  //_model=new xmlRpcModelWalk
+  //_model = dynamic_cast<xmlRpcModelWalk*>(new XmlRpcModel(&_xmlrpc, _paramRoot, &_nh));
+  // _model->XmlRpcModel::XmlRpcModel(&_xmlrpc,_paramRoot,&_nh);
+  // _model= new XmlRpcModel(&_xmlrpc,_paramRoot,&_nh);
+  _model = new xmlRpcModelWalk(&_xmlrpc, _paramRoot, &_nh);
   _services.loadData();
   // std::string s;
   _services.findServices();
+  _model->walk(*_services.raw());
+  // int rows = _model->rowCount();
+  // int columns = _model->columnCount();
+  // std::cout << _model->rowCount() << std::endl;
+  // std::cout << _model->columnCount() << std::endl;
+  // Это выводит rosdistro
+  // std::cout << _model->index(0, 0).data().toString().toStdString() << std::endl;
+  // std::cout << _model->headerData(0, Qt::Horizontal).toString().toStdString() << std::endl;
+  // if (_model->insertRow(5))
+  // // std::cout << "inserted 5";
+  // if (_model->insertColumns(2, 3))
+  //  std::cout << "inserted 6 ";
+  // if (_model->insertRow(2))
+  //  std::cout << "inserted2";
+  //_model->data(_model->index(0,0),1);
+  //_model->setData(_model->index(0, 0), "test");
+  _treeView->setModel(_model);
+  // for (auto i = 0; i != rows; ++i)
+  //{
+  //_model->index(i,0);
+  // std::cout << _model->index(i, 0).data().toString().toStdString() << std::endl;
+  // if (_model->hasChildren(_model->index(i, 0)))
+  //{
+  // std::cout << "Children " << _model->index(i, 0, _model->index(i, 0)).row() << std::endl;
+  //_model->insertRow(i + 1, _model->index(i, 0));
+  //_model->insertRow(i + 2, _model->index(i, 0));
+  //_model->insertRow(i + -2, _model->index(i, 0));
+  // _treeView->setIndexWidget(_model->index(i, 0), new QPushButton);
+  //}
+  // QList<QVariant*> chldrn = _model->findChildren<QVariant*>();
+  // if (!children.empty())
+  // for (const auto& i : children)
+  // std::cout << i->data();
+  //}
+  // std::cout << std::endl;
+  // _model->createIndex(_model->rowCount(), 0);
+  // std::cout << _model->rowCount() << std::endl;
+  // std::cout << _model->columnCount() << std::endl;
+  auto* it = _model;
+  int cnt = 0;
+  QModelIndex* index;
+  auto chill = _treeView->findChild<QAbstractItemModel*>("joint");
+  // if (chill->parent()->objectName() == "joint_position_controller1/")
+  //{
+  //  ROS_INFO("Params ok");
+  //_model->index(0,1,chill->parent()->);
+  //}
+  //_model->persistentIndexList()
+  //_treeView->findChild("joint");
+  //  for(;cnt!=_model->rowCount();++cnt)
+  //  {
+  //      if(it->index(cnt,0).data().toString()=="ihand")
+  //      {
+  //          cnt=0;
+  //          index=
+  //         //it=dynamic_cast<XmlRpcModel *>(it->index(cnt,0).model());
+  //      }
+  //          else {
+  //              ++cnt;
+  //          }
+  //  }
+  //_model->std();
+  _treeView->setIndexWidget(_model->index(3, 1), new QPushButton("update"));
 }
 
 void ParamEdit::handleRefButton()
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::handleRefButton()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
   reload();
 }
 
 void ParamEdit::handUpdButton()
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::handUpdButton()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
   _services.callServices();
 }
 
 void ParamEdit::shutdownPlugin()
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::shutdownPlugin()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 }
 
 void ParamEdit::saveSettings(qt_gui_cpp::Settings& /*global_settings*/,
                              qt_gui_cpp::Settings& perspective_settings) const
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::saveSettings()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
   perspective_settings.setValue("param_root", _paramRoot.c_str());
 }
 
 void ParamEdit::restoreSettings(const qt_gui_cpp::Settings& /*global_settings*/,
                                 const qt_gui_cpp::Settings& perspective_settings)
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::restoreSettings()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
   _paramRoot = qPrintable(perspective_settings.value("param_root", "/").toString());
   reload();
 }
 
 void ParamEdit::triggerConfiguration()
 {
-#ifdef _DEBUG
-  ROS_INFO("ParamEdit::triggerConfiguration()");
-#endif
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
   ParamRootChooser dialog;
   if (dialog.exec() == QDialog::Accepted)
   {
