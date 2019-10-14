@@ -18,7 +18,7 @@ set(rqt_paramedit_SRCS
     src/rqt_paramedit/param_root_chooser.cpp
     src/rqt_paramedit/services.cpp
     src/rqt_paramedit/xmlRpcModelWalk.cpp
-    src/rqt_paramedit/qclabel.cpp
+    src/rqt_paramedit/qcolorlabel.cpp
     )
 
 set(rqt_paramedit_HDRS
@@ -26,7 +26,7 @@ set(rqt_paramedit_HDRS
     src/rqt_paramedit/param_root_chooser.h
     include/rqt_paramedit/services.h
     include/rqt_paramedit/xmlRpcModelWalk.h
-    include/rqt_paramedit/qclabel.h
+    include/rqt_paramedit/qcolorlabel.h
     )
 
 set(rqt_paramedit_INCLUDE_DIRECTORIES

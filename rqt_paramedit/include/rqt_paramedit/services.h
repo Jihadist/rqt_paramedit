@@ -2,6 +2,7 @@
 #define SERVICES_H
 
 #include <std_srvs/Empty.h>
+#include <std_srvs/Trigger.h>
 #include <rqt_gui_cpp/plugin.h>
 #include <ros/ros.h>
 #include <ros/master.h>
@@ -52,7 +53,10 @@ private:
   XmlRpc::XmlRpcValue _data;
 
   ros::ServiceClient _client;
-  std_srvs::Empty _srvMsg;
+  // std_srvs::Empty _srvMsg;
+  std_srvs::Trigger _srvMsg;
+  std_srvs::TriggerRequest _srvReq;
+  std_srvs::TriggerResponse _srvRes;
 
   mapOfservices _servicesMap;
 

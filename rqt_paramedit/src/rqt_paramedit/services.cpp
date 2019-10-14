@@ -143,15 +143,40 @@ bool Services::callService(std::string service)
 
   _client = _nh.serviceClient<std_srvs::Empty>(service);
 
-  if (_client.call(_srvMsg))
+  //  if (_client.call(_srvMsg))
+  //  {
+  //    std::string completeMsg = service.append(" is called");
+  //    emit serviceCalled(completeMsg);
+  //    ROS_INFO("%s", completeMsg.c_str());
+  //  }
+  //  else
+  //  {
+  //    std::string errorMsg = "Failed to call service: ";
+  //    errorMsg.append(service);
+  //    emit serviceFailed(errorMsg);
+  //    ROS_ERROR("%s", errorMsg.c_str());
+  //    return false;
+  //  }
+  if (_client.call(_srvReq, _srvRes))
   {
-    std::string completeMsg = service.append(" is called");
-    emit serviceCalled(completeMsg);
-    ROS_INFO("%s", completeMsg.c_str());
+    if (_srvRes.success)
+    {
+      std::string completeMsg = service.append(" is called");
+      emit serviceCalled(completeMsg);
+      ROS_INFO("%s", completeMsg.c_str());
+    }
+    else
+    {
+      std::string errorMsg = "Failed to call service: ";
+      errorMsg.append(service);
+      emit serviceFailed(errorMsg);
+      ROS_ERROR("%s", errorMsg.c_str());
+      return false;
+    }
   }
   else
   {
-    std::string errorMsg = "Failed to call service: ";
+    std::string errorMsg = "Failed to find service: ";
     errorMsg.append(service);
     emit serviceFailed(errorMsg);
     ROS_ERROR("%s", errorMsg.c_str());

@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QFormLayout>
 #include <QVBoxLayout>
+#include <QMessageBox>
+#include <QWidget>
 
 #include <QVariant>
 #include <QList>
@@ -41,7 +43,8 @@ ParamEdit::ParamEdit()
   _refButton = new QPushButton();
   _refButton->setText("Refresh param");
 
-  _updateLabel = new QLabel("Here you can see called service");
+  //_updateLabel = new QLabel("Here you can see called service");
+  _updateLabel = new QColorLabel();
 
   _widget->setLayout(_mainLayout);
   _mainLayout->addLayout(_horLayout);
@@ -142,13 +145,13 @@ void ParamEdit::handUpdButton()
 
 void ParamEdit::updateLabelText(std::string& s)
 {
-  _updateLabel->setText(QString::fromStdString(s));
-  //_updateLabel->setText("Success");
-  //_updateLabel->setSt
+  //_updateLabel->setText(QString::fromStdString(s));
+  _updateLabel->changeBackgroundColorWithTimer();
 }
 
 void ParamEdit::failedMsg(std::string& s)
 {
+  QMessageBox::critical(nullptr, "rqt_pramedir", QString::fromStdString(s));
 }
 
 void ParamEdit::shutdownPlugin()

@@ -17,8 +17,7 @@
 #include <QSignalMapper>
 #include <QLabel>
 #include <QPalette>
-#include "rqt_paramedit/qclabel.h"
-
+#include <rqt_paramedit/qcolorlabel.h>
 #include <vector>
 #include <string>
 
@@ -59,7 +58,8 @@ protected:
   QPushButton* _updateButton;
   QPushButton* _refButton;
 
-  QLabel* _updateLabel;
+  // QLabel* _updateLabel;
+  QColorLabel* _updateLabel;
 
   QVBoxLayout* _mainLayout;
   QHBoxLayout* _horLayout;
