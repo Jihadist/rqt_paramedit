@@ -38,9 +38,9 @@ XmlRpcTreeItem::XmlRpcTreeItem(XmlRpc::XmlRpcValue* data, XmlRpcTreeItem* parent
                                ros::NodeHandle* nh)
   : _data(data), _parent(parent), _path(path), _nh(nh)
 {
-  ROS_DEBUG("XmlRpcTreeItem::XmlRpcTreeItem()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
   // path это полное имя параметра пример /roslaunch/uris/host_notebook__41357
-  ROS_DEBUG("%s", path.c_str());
+  // OS_DEBUG("%s", path.c_str());
   // data пара имя - значение пример
   // <value><struct><member><name>host_notebook__41357</name><value>http://notebook:41357/</value></member></struct></value>
   // где name это последняя часть имени параметра а value его значение
@@ -55,7 +55,7 @@ XmlRpcTreeItem::XmlRpcTreeItem(XmlRpc::XmlRpcValue* data, XmlRpcTreeItem* parent
   // ROS_DEBUG_COND(data->size() < 100, data->toXml().c_str());
   // std::cout << std::endl;
   // ROS_DEBUG(data->toXml().c_str());
-  std::cout << _path << std::endl;
+  // std::cout << _path << std::endl;
   ROS_ASSERT(_nh != NULL);
 
   createChildren();
@@ -63,7 +63,7 @@ XmlRpcTreeItem::XmlRpcTreeItem(XmlRpc::XmlRpcValue* data, XmlRpcTreeItem* parent
 
 XmlRpcTreeItem::~XmlRpcTreeItem()
 {
-  ROS_DEBUG("XmlRpcTreeItem::~XmlRpcTreeItem()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
   std::for_each(_children.begin(), _children.end(), [](XmlRpcTreeItem* child) { delete child; });
   // forEach(.toXml()XmlRpcTreeItem * child, _children) delete child;
   _children.clear();
@@ -75,7 +75,7 @@ XmlRpcTreeItem::~XmlRpcTreeItem()
  */
 unsigned int XmlRpcTreeItem::childCount() const
 {
-  ROS_DEBUG("unsigned int XmlRpcTreeItem::childCount()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
   if (_children.size() > 0)
     return _children.size();
 
@@ -84,7 +84,7 @@ unsigned int XmlRpcTreeItem::childCount() const
 
 int XmlRpcTreeItem::childIndexOf(const XmlRpcTreeItem* child) const
 {
-  ROS_DEBUG("int XmlRpcTreeItem::childIndexOf()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 
   int index = -1;
   for (unsigned int i = 0; i < _children.size(); i++)
@@ -100,7 +100,7 @@ int XmlRpcTreeItem::childIndexOf(const XmlRpcTreeItem* child) const
 
 int XmlRpcTreeItem::row() const
 {
-  ROS_DEBUG("int XmlRpcTreeItem::row()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 
   if (_parent)
   {
@@ -113,7 +113,7 @@ int XmlRpcTreeItem::row() const
 
 QVariant XmlRpcTreeItem::xmlToVariant(XmlRpc::XmlRpcValue& val) const
 {
-  ROS_DEBUG("QVariant XmlRpcTreeItem::xmlToVariant()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 
   switch (val.getType())
   {
@@ -166,7 +166,7 @@ QVariant XmlRpcTreeItem::xmlToVariant(XmlRpc::XmlRpcValue& val) const
 
 QVariant XmlRpcTreeItem::data(int row, int column) const
 {
-  ROS_DEBUG("QVariant XmlRpcTreeItem::data()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 
   // this node always has to be a map!
 
@@ -213,7 +213,7 @@ QVariant XmlRpcTreeItem::data(int row, int column) const
 
 bool XmlRpcTreeItem::isBool(int row, int column) const
 {
-  ROS_DEBUG("bool XmlRpcTreeItem::isBool()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 
   // this node always has to be a map!
 
@@ -252,7 +252,7 @@ bool XmlRpcTreeItem::isBool(int row, int column) const
 
 bool XmlRpcTreeItem::setData(QVariant val)
 {
-  ROS_DEBUG("bool XmlRpcTreeItem::setData()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 
   XmlRpc::XmlRpcValue::Type type = _data->getType();
   if (type == XmlRpc::XmlRpcValue::TypeStruct || type == XmlRpc::XmlRpcValue::TypeArray ||
@@ -391,9 +391,14 @@ bool XmlRpcTreeItem::setData(QVariant val)
   return true;
 }
 
+std::string* XmlRpcTreeItem::getPath()
+{
+  return &_path;
+}
+
 void XmlRpcTreeItem::setParam()
 {
-  ROS_DEBUG("void XmlRpcTreeItem::setParam()");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
 
   ROS_ASSERT(_data->getType() == XmlRpc::XmlRpcValue::TypeArray);
 
@@ -426,7 +431,7 @@ void XmlRpcTreeItem::createChildren()
 
 void XmlRpcTreeItem::addChild(const std::string& name, XmlRpc::XmlRpcValue* childData)
 {
-  ROS_DEBUG("void XmlRpcTreeItem::addChild(const std::string& name, XmlRpc::XmlRpcValue* childData)");
+  ROS_DEBUG(__PRETTY_FUNCTION__);
   // std::cout << name << std::endl;
   // childData->write(std::cout);
   ROS_DEBUG_COND(childData->getType() == XmlRpc::XmlRpcValue::TypeArray, "Child is array");

@@ -23,6 +23,8 @@ ParamEdit::ParamEdit()
   , _refButton(NULL)
   , _mainLayout(new QVBoxLayout)
   , _horLayout(new QHBoxLayout)
+
+  , _updateLabel(NULL)
 {
 #ifdef _DEBUG
   if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug))
@@ -39,15 +41,19 @@ ParamEdit::ParamEdit()
   _refButton = new QPushButton();
   _refButton->setText("Refresh param");
 
+  _updateLabel = new QLabel("Here you can see called service");
+
   _widget->setLayout(_mainLayout);
   _mainLayout->addLayout(_horLayout);
   _mainLayout->addWidget(_treeView);
 
   _horLayout->addWidget(_refButton);
   _horLayout->addWidget(_updateButton);
+  _horLayout->addWidget(_updateLabel);
 
   connect(_refButton, SIGNAL(clicked()), this, SLOT(handleRefButton()));
   connect(_updateButton, SIGNAL(clicked()), this, SLOT(handUpdButton()));
+  connect(&_services, &Services::serviceCalled, this, &ParamEdit::updateLabelText);
 }
 
 void ParamEdit::initPlugin(qt_gui_cpp::PluginContext& context)
@@ -93,15 +99,18 @@ void ParamEdit::reload()
   }
 
   delete _model;
+  _services.raw()->clear();
+  _model = new xmlRpcModelWalk(&_xmlrpc, _paramRoot, &_nh);
   //_model=new xmlRpcModelWalk
   //_model = dynamic_cast<xmlRpcModelWalk*>(new XmlRpcModel(&_xmlrpc, _paramRoot, &_nh));
   // _model->XmlRpcModel::XmlRpcModel(&_xmlrpc,_paramRoot,&_nh);
   // _model= new XmlRpcModel(&_xmlrpc,_paramRoot,&_nh);
-  _model = new xmlRpcModelWalk(&_xmlrpc, _paramRoot, &_nh);
   _services.loadData();
   // std::string s;
   _services.findServices();
-  _model->walk(*_services.raw());
+  //_model = new XmlRpcModel(&_xmlrpc, _paramRoot, &_nh, *_services.raw());
+
+  //_model->walk(*_services.raw());
   // int rows = _model->rowCount();
   // int columns = _model->columnCount();
   // std::cout << _model->rowCount() << std::endl;
@@ -109,61 +118,12 @@ void ParamEdit::reload()
   // Это выводит rosdistro
   // std::cout << _model->index(0, 0).data().toString().toStdString() << std::endl;
   // std::cout << _model->headerData(0, Qt::Horizontal).toString().toStdString() << std::endl;
-  // if (_model->insertRow(5))
-  // // std::cout << "inserted 5";
-  // if (_model->insertColumns(2, 3))
-  //  std::cout << "inserted 6 ";
-  // if (_model->insertRow(2))
-  //  std::cout << "inserted2";
-  //_model->data(_model->index(0,0),1);
-  //_model->setData(_model->index(0, 0), "test");
   _treeView->setModel(_model);
-  // for (auto i = 0; i != rows; ++i)
-  //{
-  //_model->index(i,0);
-  // std::cout << _model->index(i, 0).data().toString().toStdString() << std::endl;
-  // if (_model->hasChildren(_model->index(i, 0)))
-  //{
-  // std::cout << "Children " << _model->index(i, 0, _model->index(i, 0)).row() << std::endl;
-  //_model->insertRow(i + 1, _model->index(i, 0));
-  //_model->insertRow(i + 2, _model->index(i, 0));
-  //_model->insertRow(i + -2, _model->index(i, 0));
+  _model->walk(*_services.raw());
+  _services.createButtons(_treeView);
+  //_treeView->setIndexWidget(_model->index(3, 1), new QPushButton("update"));
+
   // _treeView->setIndexWidget(_model->index(i, 0), new QPushButton);
-  //}
-  // QList<QVariant*> chldrn = _model->findChildren<QVariant*>();
-  // if (!children.empty())
-  // for (const auto& i : children)
-  // std::cout << i->data();
-  //}
-  // std::cout << std::endl;
-  // _model->createIndex(_model->rowCount(), 0);
-  // std::cout << _model->rowCount() << std::endl;
-  // std::cout << _model->columnCount() << std::endl;
-  auto* it = _model;
-  int cnt = 0;
-  QModelIndex* index;
-  auto chill = _treeView->findChild<QAbstractItemModel*>("joint");
-  // if (chill->parent()->objectName() == "joint_position_controller1/")
-  //{
-  //  ROS_INFO("Params ok");
-  //_model->index(0,1,chill->parent()->);
-  //}
-  //_model->persistentIndexList()
-  //_treeView->findChild("joint");
-  //  for(;cnt!=_model->rowCount();++cnt)
-  //  {
-  //      if(it->index(cnt,0).data().toString()=="ihand")
-  //      {
-  //          cnt=0;
-  //          index=
-  //         //it=dynamic_cast<XmlRpcModel *>(it->index(cnt,0).model());
-  //      }
-  //          else {
-  //              ++cnt;
-  //          }
-  //  }
-  //_model->std();
-  _treeView->setIndexWidget(_model->index(3, 1), new QPushButton("update"));
 }
 
 void ParamEdit::handleRefButton()
@@ -178,6 +138,17 @@ void ParamEdit::handUpdButton()
   ROS_DEBUG(__PRETTY_FUNCTION__);
 
   _services.callServices();
+}
+
+void ParamEdit::updateLabelText(std::string& s)
+{
+  _updateLabel->setText(QString::fromStdString(s));
+  //_updateLabel->setText("Success");
+  //_updateLabel->setSt
+}
+
+void ParamEdit::failedMsg(std::string& s)
+{
 }
 
 void ParamEdit::shutdownPlugin()

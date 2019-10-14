@@ -1,3 +1,4 @@
+#include "qt_paramedit/xmlRpcModel.h"
 #include "rqt_paramedit/services.h"
 
 std::vector<std::string> split(const std::string& s, char seperator)
@@ -71,15 +72,15 @@ void Services::printServices()
 
 Services::mapOfservices* Services::findServices()
 {
-  // XmlRpc::XmlRpcValue::ValueStruct _struct;
-  // _struct.insert()
+  // delete _signalMapper;
+  //_signalMapper->deleteLater();
+
   ROS_DEBUG(__PRETTY_FUNCTION__);
 
   auto& buf = _data[2];
   ROS_DEBUG_COND(buf.getType() == XmlRpc::XmlRpcValue::TypeArray, "Buffer is array");
   ROS_DEBUG_COND(buf.getType() == XmlRpc::XmlRpcValue::TypeStruct, "Buffer is struct");
   ROS_DEBUG_COND(buf.getType() == XmlRpc::XmlRpcValue::TypeString, "Buffer is string");
-  // buf.write(std::cout);
 
   for (int i = 0; i < buf.size(); ++i)
   {
@@ -97,29 +98,16 @@ Services::mapOfservices* Services::findServices()
       // std::cout << std::endl << buf[i].toXml() << std::endl;
 
       auto buf = split(topicName, '/');
-      // for (const auto i : buf)
-      //{
-      //  vec.push_back(i);
-      // std::cout << i << " : " << vec.size() << std::endl;
-      //}
-      //_struct.emplace(std::pair<std::string, XmlRpc::XmlRpcValue>(vec.front(), buf[i]));
-      // _struct.insert(vec.front(), buf[i]);
-      // ROS_DEBUG("%s", ServiceToXml(vec).c_str());
     }
   }
-  // for (const auto& i : _struct)
-  //  {
-  //   std::cout << i.first << " : ";
-  //    i.second.write(std::cout);
-  //    std::cout << std::endl;
 
-  //  }
-  printServices();
   return &_servicesMap;
 }
 
 Services::mapOfservices* Services::findServices(std::string& searchTopic)
 {
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
   auto& buf = _data[2];
   for (int i = 0; i < buf.size(); ++i)
   {
@@ -131,7 +119,7 @@ Services::mapOfservices* Services::findServices(std::string& searchTopic)
       //_servicesList.insert(topicName);
       _servicesMap.emplace(topicName, QModelIndex());
   }
-  printServices();
+  // printServices();
   return &_servicesMap;
 }
 
@@ -157,12 +145,16 @@ bool Services::callService(std::string service)
 
   if (_client.call(_srvMsg))
   {
-    ROS_INFO("%s", service.append(" is called").c_str());
+    std::string completeMsg = service.append(" is called");
+    emit serviceCalled(completeMsg);
+    ROS_INFO("%s", completeMsg.c_str());
   }
   else
   {
     std::string errorMsg = "Failed to call service: ";
-    ROS_ERROR("%s", errorMsg.append(service).c_str());
+    errorMsg.append(service);
+    emit serviceFailed(errorMsg);
+    ROS_ERROR("%s", errorMsg.c_str());
     return false;
   }
 
@@ -177,4 +169,23 @@ Services::mapOfservices Services::getServicesMap() const
 void Services::setServicesMap(const mapOfservices& servicesMap)
 {
   _servicesMap = servicesMap;
+}
+
+void Services::createButtons(QTreeView* tree)
+{
+  ROS_DEBUG(__PRETTY_FUNCTION__);
+
+  std::cout << "Size of map" << _servicesMap.size() << std::endl;
+  ;
+  for (auto& i : _servicesMap)
+  {
+    QPushButton* button = new QPushButton("update");
+    const std::string sigName = i.first;
+    button->setToolTip(QString::fromStdString(sigName));
+    tree->setIndexWidget(i.second, button);
+
+    connect(button, &QPushButton::clicked, [this, sigName]() { this->callService(sigName); });
+
+    std::cout << "Button at " << i.first << " created" << std::endl;
+  }
 }

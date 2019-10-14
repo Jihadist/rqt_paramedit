@@ -55,6 +55,7 @@ public:
    * \param [in] path the path in the parameter server to this item
    */
   XmlRpcTreeItem(XmlRpc::XmlRpcValue* data, XmlRpcTreeItem* parent, const std::string& path, ros::NodeHandle* nh);
+
   ~XmlRpcTreeItem();
 
   XmlRpcTreeItem* parent()
@@ -82,18 +83,28 @@ public:
   /// set data for this item
   bool setData(QVariant val);
 
+  std::string* getPath();
+
 protected:
   /// Create all children based on data.
   void createChildren();
+  // void createChildren(std::map<std::string, QModelIndex>& out);
 
   /// Create a child from its data.
   void addChild(const std::string& name, XmlRpc::XmlRpcValue* childData);
+  // void addChild(const std::string& name, XmlRpc::XmlRpcValue* childData, std::map<std::string, QModelIndex>& out);
 
   /// Convert a XmlRpcValue to QVariant - only leaf values are supported.
   QVariant xmlToVariant(XmlRpc::XmlRpcValue& val) const;
 
   /// write this XmlRpcValue to parameter server (for array childs).
   void setParam();
+
+  void walk(std::map<std::string, QModelIndex>& out)
+  {
+    // out.clear();
+    walkImpl(_parent, out);
+  }
 
 protected:
   XmlRpc::XmlRpcValue* _data;
@@ -107,9 +118,7 @@ protected:
   deque<XmlRpcTreeItem*> _children;
 
 private:
-  void test()
-  {
-  }
+  void walkImpl(XmlRpcTreeItem* item, std::map<std::string, QModelIndex>& map);
 };
 
 #endif

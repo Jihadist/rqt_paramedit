@@ -1,7 +1,7 @@
 #ifndef RQT_PARAMEDIT_H
 #define RQT_PARAMEDIT_H
 
-#define _DEBUG
+//#define _DEBUG
 
 #include <rqt_gui_cpp/plugin.h>
 #include <qt_paramedit/xmlRpcModel.h>
@@ -14,6 +14,11 @@
 #include <QPushButton>
 #include <QFormLayout>
 #include <QVBoxLayout>
+#include <QSignalMapper>
+#include <QLabel>
+#include <QPalette>
+#include "rqt_paramedit/qclabel.h"
+
 #include <vector>
 #include <string>
 
@@ -54,6 +59,8 @@ protected:
   QPushButton* _updateButton;
   QPushButton* _refButton;
 
+  QLabel* _updateLabel;
+
   QVBoxLayout* _mainLayout;
   QHBoxLayout* _horLayout;
 
@@ -62,7 +69,7 @@ protected:
   XmlRpc::XmlRpcValue _xmlrpc;
 
   xmlRpcModelWalk* _model;
-  // XmlRpcModel* _model;
+
   XmlRpcItemDelegate* _delegate;
 
   Services _services;
@@ -70,6 +77,9 @@ protected:
 private slots:
   void handleRefButton();
   void handUpdButton();
+public slots:
+  void updateLabelText(std::string& s);
+  void failedMsg(std::string& s);
 };
 
 }  // namespace rqt_paramedit

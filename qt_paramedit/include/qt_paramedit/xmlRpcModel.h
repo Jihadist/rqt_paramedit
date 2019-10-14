@@ -48,6 +48,8 @@ class XmlRpcModel : public QAbstractItemModel
   Q_OBJECT
 
 public:
+  //  XmlRpcModel(XmlRpc::XmlRpcValue* rootData, const std::string& rootPath, ros::NodeHandle* nh,
+  //              std::map<std::string, QModelIndex>& out);
   XmlRpcModel(XmlRpc::XmlRpcValue* rootData, const std::string& rootPath, ros::NodeHandle* nh);
   ~XmlRpcModel();
 
@@ -77,8 +79,15 @@ public:
 
   void std();
 
+  //  void walk(std::map<std::string, QModelIndex>& out)
+  //  {
+  //    // out.clear();
+  //    walkImpl(getRoot(), out);
+  //  }
+
 private:
   XmlRpcTreeItem* _root;
+  // void walkImpl(XmlRpcTreeItem* item, std::map<std::string, QModelIndex>& map);
 
   unsigned int _maxDisplayLength;
 };

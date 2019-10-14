@@ -14,6 +14,10 @@
 
 #include <QModelIndex>
 #include <QString>
+#include <QTreeView>
+#include <QPushButton>
+#include <QDebug>
+#include <QSignalMapper>
 
 class Services : public QObject
 {
@@ -39,6 +43,8 @@ public:
   {
     return &_servicesMap;
   }
+  // void createButtons(QTreeView* tree);
+  void createButtons(QTreeView* tree);
 
 private:
   ros::NodeHandle _nh;
@@ -52,8 +58,9 @@ private:
 
   // Dev funcs
   void printServices();
-public slots:
-  void call();
+signals:
+  void serviceCalled(std::string& s);
+  void serviceFailed(std::string& s);
 };
 
 #endif  // SERVICES_H

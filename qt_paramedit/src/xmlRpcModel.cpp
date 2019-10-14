@@ -30,14 +30,24 @@
 #include <QDebug>
 #include <ros/console.h>
 
+// XmlRpcModel::XmlRpcModel(XmlRpc::XmlRpcValue* rootData, const std::string& rootPath, ros::NodeHandle* nh,
+//                         std::map<std::string, QModelIndex>& out)
+//{
+//#ifdef _DEBUG
+//  if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug))
+//  {
+//    ros::console::notifyLoggerLevelsChanged();
+//  }
+//#endif
+//  ROS_DEBUG(__PRETTY_FUNCTION__);
+
+//  _root = new XmlRpcTreeItem(rootData, NULL, rootPath, nh);
+//  walk(out);
+//  _maxDisplayLength = 120;
+//}
+
 XmlRpcModel::XmlRpcModel(XmlRpc::XmlRpcValue* rootData, const std::string& rootPath, ros::NodeHandle* nh)
 {
-#ifdef _DEBUG
-  if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug))
-  {
-    ros::console::notifyLoggerLevelsChanged();
-  }
-#endif
   ROS_DEBUG(__PRETTY_FUNCTION__);
   _root = new XmlRpcTreeItem(rootData, NULL, rootPath, nh);
 
@@ -239,6 +249,27 @@ void XmlRpcModel::std()
   for (const auto& i : buf)
     ROS_INFO("%s", i.data().toString().toStdString().c_str());
 }
+
+// void XmlRpcModel::walkImpl(XmlRpcTreeItem* item, std::map<std::string, QModelIndex>& map)
+//{
+//  ROS_DEBUG(__PRETTY_FUNCTION__);
+//  for (int row = 0; row < item->childCount(); ++row)
+//  {
+//    // item->get
+//    std::string name = *item->getPath();
+//    name.append("/update_parameters");
+//    // std::string name = item->data(row, 0).toString().toStdString();
+//    std::cout << "Row " << row << " name: " << name << std::endl;
+
+//    auto it = map.find(name);
+//    if (it != map.end())
+//    {
+//      it->second = this->createIndex(row, 1);
+//      std::cout << row << " Index add: " << it->first << std::endl;
+//    }
+//    walkImpl(item->child(row), map);
+//  }
+//}
 
 QVariant XmlRpcModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
