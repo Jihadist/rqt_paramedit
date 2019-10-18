@@ -72,9 +72,6 @@ void Services::printServices()
 
 Services::mapOfservices* Services::findServices()
 {
-  // delete _signalMapper;
-  //_signalMapper->deleteLater();
-
   ROS_DEBUG(__PRETTY_FUNCTION__);
 
   auto& buf = _data[2];
@@ -92,10 +89,7 @@ Services::mapOfservices* Services::findServices()
     {
       std::vector<std::string> vec;
 
-      //_servicesList.insert(topicName);
-
       _servicesMap.emplace(topicName, QModelIndex());
-      // std::cout << std::endl << buf[i].toXml() << std::endl;
 
       auto buf = split(topicName, '/');
     }
@@ -116,10 +110,9 @@ Services::mapOfservices* Services::findServices(std::string& searchTopic)
     // searchTopic="update_parameters";
 
     if (std::equal(searchTopic.rbegin(), searchTopic.rend(), topicName.rbegin()))
-      //_servicesList.insert(topicName);
       _servicesMap.emplace(topicName, QModelIndex());
   }
-  // printServices();
+
   return &_servicesMap;
 }
 
@@ -128,8 +121,6 @@ bool Services::callServices()
   ROS_DEBUG(__PRETTY_FUNCTION__);
 
   // Call services
-  // for (auto s : _servicesList)
-  // callService(s);
   for (auto s : _servicesMap)
     callService(s.first);
   return true;
@@ -141,22 +132,8 @@ bool Services::callService(std::string service)
 
   // Call service
 
-  _client = _nh.serviceClient<std_srvs::Empty>(service);
+  _client = _nh.serviceClient<std_srvs::Trigger>(service);
 
-  //  if (_client.call(_srvMsg))
-  //  {
-  //    std::string completeMsg = service.append(" is called");
-  //    emit serviceCalled(completeMsg);
-  //    ROS_INFO("%s", completeMsg.c_str());
-  //  }
-  //  else
-  //  {
-  //    std::string errorMsg = "Failed to call service: ";
-  //    errorMsg.append(service);
-  //    emit serviceFailed(errorMsg);
-  //    ROS_ERROR("%s", errorMsg.c_str());
-  //    return false;
-  //  }
   if (_client.call(_srvReq, _srvRes))
   {
     if (_srvRes.success)

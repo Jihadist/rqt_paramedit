@@ -30,32 +30,13 @@
 #include <QDateTime>
 
 #include <ros/console.h>
-//#include <boost/foreach.hpp>
 #include <algorithm>
-//#define forEach BOOST_FOREACH
 
 XmlRpcTreeItem::XmlRpcTreeItem(XmlRpc::XmlRpcValue* data, XmlRpcTreeItem* parent, const std::string& path,
                                ros::NodeHandle* nh)
   : _data(data), _parent(parent), _path(path), _nh(nh)
 {
   ROS_DEBUG(__PRETTY_FUNCTION__);
-  // path это полное имя параметра пример /roslaunch/uris/host_notebook__41357
-  // OS_DEBUG("%s", path.c_str());
-  // data пара имя - значение пример
-  // <value><struct><member><name>host_notebook__41357</name><value>http://notebook:41357/</value></member></struct></value>
-  // где name это последняя часть имени параметра а value его значение
-  // for (const auto& i : *data)
-  {
-    // data->write(std::cout);
-    // ROS_DEBUG("%s", f.c_str());
-    // auto s = i.second;
-  }
-
-  // ROS_DEBUG(std::string (i.first));
-  // ROS_DEBUG_COND(data->size() < 100, data->toXml().c_str());
-  // std::cout << std::endl;
-  // ROS_DEBUG(data->toXml().c_str());
-  // std::cout << _path << std::endl;
   ROS_ASSERT(_nh != NULL);
 
   createChildren();

@@ -44,7 +44,6 @@ public:
   {
     return &_servicesMap;
   }
-  // void createButtons(QTreeView* tree);
   void createButtons(QTreeView* tree);
 
 private:
@@ -53,7 +52,6 @@ private:
   XmlRpc::XmlRpcValue _data;
 
   ros::ServiceClient _client;
-  // std_srvs::Empty _srvMsg;
   std_srvs::Trigger _srvMsg;
   std_srvs::TriggerRequest _srvReq;
   std_srvs::TriggerResponse _srvRes;

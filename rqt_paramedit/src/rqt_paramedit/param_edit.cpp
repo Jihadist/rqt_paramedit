@@ -104,29 +104,12 @@ void ParamEdit::reload()
   delete _model;
   _services.raw()->clear();
   _model = new xmlRpcModelWalk(&_xmlrpc, _paramRoot, &_nh);
-  //_model=new xmlRpcModelWalk
-  //_model = dynamic_cast<xmlRpcModelWalk*>(new XmlRpcModel(&_xmlrpc, _paramRoot, &_nh));
-  // _model->XmlRpcModel::XmlRpcModel(&_xmlrpc,_paramRoot,&_nh);
-  // _model= new XmlRpcModel(&_xmlrpc,_paramRoot,&_nh);
-  _services.loadData();
-  // std::string s;
-  _services.findServices();
-  //_model = new XmlRpcModel(&_xmlrpc, _paramRoot, &_nh, *_services.raw());
 
-  //_model->walk(*_services.raw());
-  // int rows = _model->rowCount();
-  // int columns = _model->columnCount();
-  // std::cout << _model->rowCount() << std::endl;
-  // std::cout << _model->columnCount() << std::endl;
-  // Это выводит rosdistro
-  // std::cout << _model->index(0, 0).data().toString().toStdString() << std::endl;
-  // std::cout << _model->headerData(0, Qt::Horizontal).toString().toStdString() << std::endl;
+  _services.loadData();
+  _services.findServices();
   _treeView->setModel(_model);
   _model->walk(*_services.raw());
   _services.createButtons(_treeView);
-  //_treeView->setIndexWidget(_model->index(3, 1), new QPushButton("update"));
-
-  // _treeView->setIndexWidget(_model->index(i, 0), new QPushButton);
 }
 
 void ParamEdit::handleRefButton()
@@ -145,7 +128,6 @@ void ParamEdit::handUpdButton()
 
 void ParamEdit::updateLabelText(std::string& s)
 {
-  //_updateLabel->setText(QString::fromStdString(s));
   _updateLabel->changeBackgroundColorWithTimer();
 }
 
