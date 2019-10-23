@@ -54,8 +54,8 @@ ParamEdit::ParamEdit()
   _horLayout->addWidget(_updateButton);
   _horLayout->addWidget(_updateLabel);
 
-  connect(_refButton, SIGNAL(clicked()), this, SLOT(handleRefButton()));
-  connect(_updateButton, SIGNAL(clicked()), this, SLOT(handUpdButton()));
+  connect(_refButton, &QAbstractButton::clicked, this, &ParamEdit::handleRefButton);
+  connect(_updateButton, &QAbstractButton::clicked, this, &ParamEdit::handUpdButton);
   connect(&_services, &Services::serviceCalled, this, &ParamEdit::updateLabelText);
   connect(&_services, &Services::serviceFailed, this, &ParamEdit::failedMsg);
 }

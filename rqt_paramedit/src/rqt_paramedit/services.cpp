@@ -184,8 +184,8 @@ void Services::createButtons(QTreeView* tree)
 {
   ROS_DEBUG(__PRETTY_FUNCTION__);
 
-  std::cout << "Size of map" << _servicesMap.size() << std::endl;
-  ;
+  // std::cout << "Size of map" << _servicesMap.size() << std::endl;
+
   for (auto& i : _servicesMap)
   {
     QPushButton* button = new QPushButton("update");
@@ -195,6 +195,6 @@ void Services::createButtons(QTreeView* tree)
 
     connect(button, &QPushButton::clicked, [this, sigName]() { this->callService(sigName); });
 
-    std::cout << "Button at " << i.first << " created" << std::endl;
+    // std::cout << "Button at " << i.first << " created" << std::endl;
   }
 }
