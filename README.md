@@ -3,6 +3,8 @@ rqt_paramedit
 
 A graphical parameter editor for ROS.
 
+Paramedit can edit params and send to server automatically. If paramedit find service update_params for param's parent this service may be called by yourself(press the button near parent).
+
 
 Build and Install
 
