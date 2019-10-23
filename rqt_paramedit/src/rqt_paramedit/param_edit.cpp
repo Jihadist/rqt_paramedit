@@ -57,6 +57,7 @@ ParamEdit::ParamEdit()
   connect(_refButton, SIGNAL(clicked()), this, SLOT(handleRefButton()));
   connect(_updateButton, SIGNAL(clicked()), this, SLOT(handUpdButton()));
   connect(&_services, &Services::serviceCalled, this, &ParamEdit::updateLabelText);
+  connect(&_services, &Services::serviceFailed, this, &ParamEdit::failedMsg);
 }
 
 void ParamEdit::initPlugin(qt_gui_cpp::PluginContext& context)

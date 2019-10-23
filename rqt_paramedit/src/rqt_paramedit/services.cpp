@@ -121,8 +121,15 @@ bool Services::callServices()
   ROS_DEBUG(__PRETTY_FUNCTION__);
 
   // Call services
+  //  if (_servicesMap.size() > 0)
   for (auto s : _servicesMap)
     callService(s.first);
+  //  else
+  //  {
+  //    std::string errorMsg = "Nothing to call";
+  //    emit serviceFailed(errorMsg);
+  //    ROS_ERROR("%s", errorMsg.c_str());
+  //  }
   return true;
 }
 
